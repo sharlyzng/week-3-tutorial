@@ -1,0 +1,74 @@
+pacman::p_load(tidyverse,skimr)
+dataset<-read_csv("/Users/sharlyzng/week-3-tutorial/EMDAT.csv")
+glimpse(dataset)
+str(dataset)
+select(dataset,Entity,homeless_all_disasters)
+select(dataset,Entity,Year)
+country<-c("Afghanistan","Brazil","China")
+year_1999<-c(745,37737,212258)
+year_2000<-c(2666,80488,213766)
+table1<-data.frame(country,year_1999,year_2000)
+view(table1)
+table1%>%pivot_longer(cols=c("year_1999","year_2000"),names_to="year",values_to="cases")
+view(billboard)
+billboard
+billboard%>%
+  pivot_longer(
+    cols=starts_with("wk"),
+    names_to="week",
+    values_to="rank",
+    values_drop_na=TRUE)
+table2
+table2%>%
+  pivot_wider(
+    names_from=type,
+    values_from=count
+  )
+table3
+table3%>%
+  separate(rate,
+           into=c("cases","population"),
+           sep="/")
+  )
+glimpse(mtcars)
+dplyr::arrange(mtcars,mpg)
+dplyr::arrange(mtcars,disp)
+starwars
+starwars%>%
+  dplyr::filter(hair_color%in%c("black","brown"))
+starwars%>%
+  arrange(desc(height))%>%
+  slice(1:6)
+starwars%>%
+  arrange(desc(mass))%>%
+  slice(5:10)
+msleep
+names(msleep)
+names(dataset)
+msleep%>%
+  dplyr::select(where(is.numeric))
+msleep%>%
+  dplyr::select(contains("sleep"))
+pacman::p_load(janitor)
+msleep%>%
+  filter(order=="Primates",sleep_total>10)%>%
+  select(name,sleep_rem,sleep_cycle,sleep_total)%>%
+  arrange(name)%>%
+  mutate(sleep_total_min=sleep_total*60)
+tablea<-msleep%>%
+  group_by(order)%>%
+  summarise(
+    n=n(),
+    mean_sleep=mean(sleep_total),
+    sd_sleep=sd(sleep_total)
+  )
+tablea
+pacman::p_load(
+  kableExtra,
+  flextable
+)
+tablea%>%kableExtra::kable()
+view(tablea)
+msleep%>%
+  group_by(order)%>%
+  summarise(mean_sleep=mean(sleep_total))
